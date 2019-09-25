@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Roboto:200,300,400);
+    @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+    .snackbar {
+      bottom: 1em;
+      left: 1em;
+      position: fixed;
+    }
+
+    .snackbar-text {
+      background-color: #212121;
+      border-radius: 0.19em;
+      color: #FFF;
+      display: inherit;
+      font-family: 'Roboto';
+      font-size: 0.8em;
+      font-weight: 200;
+      min-width: 15em;
+      padding: 1em 2em;
+      position: relative;
+      text-align: left;
+    }
+
+    .FAB {
+      position: absolute;
+      bottom: 0px;
+      right: 60px;
+      width: 56px;
+    }
+
+    .FAB__action-button,
+    .FAB__mini-action-button {
+      cursor: pointer;
+      position: absolute;
+    }
+
+
+    .FAB__action-button:hover .action-button__icon {
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.14), 0 8px 16px rgba(0, 0, 0, 0.28);
+    }
+
+
+    .action-button__icon {
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+      background-color: #ff4081;
+      border-radius: 50%;
+      color: #fff;
+      padding: 16px;
+    }
+
+    .action-button__text--hide {
+      display: none;
+    }
+
+
+    .mini-action-button__icon {
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+      background-color: #536DFE;
+      border-radius: 50%;
+      color: #fff;
+      padding: 8px;
+    }
+
+    .mini-action-button__icon:hover {
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.14), 0 8px 16px rgba(0, 0, 0, 0.28);
+    }
+
+    .mini-action-button__text--hide {
+      display: none;
+    }
+
+    tfoot input {
+      width: 100%;
+      padding: 3px;
+      box-sizing: border-box;
+    }
+
+    #btnfloat {
+      position: absolute !important;
+      bottom: -40vh !important;
+    }
+  </style>
+
+  <title>EACIIT</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">EACIIT</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <h1 class="mt-3">E-Commerce Banking Report</h1>
+    <select name="" id="" class="mt-2">
+      <option value="" selected>SELECT COMPANY NAME (CMGUnmaskedName)</option>
+    </select>
+    <div class="row">
+      <div class="col-3">
+        <div id="roe"></div>
+      </div>
+      <div class="col-3">
+        <div id="revenue"></div>
+      </div>
+      <div class="col-3">
+        <div id="totalLimit"></div>
+      </div>
+      <div class="col-3">
+        <div id="companyAverage"></div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-12">
+        <table id="tableFetch" class="display" style="width:100%;">
+          <thead>
+            <tr>
+              <th>CMGUnmaskedID</th>
+              <th>CMGUnmaskedName</th>
+              <th>ClientTier</th>
+              <th>GCPStream</th>
+              <th>GCPBusiness</th>
+              <th>CMGGlobalBU</th>
+              <th>CMGSegmentName</th>
+              <th>GlobalControlPoint</th>
+              <th>GCPGeography</th>
+              <th>GlobalRelationshipManagerName</th>
+              <th>REVENUE_FY14</th>
+              <th>REVENUE_FY15</th>
+              <th>Deposits_EOP_FY14</th>
+              <th>Deposits_EOP_FY15x</th>
+              <th>TotalLimits_EOP_FY14</th>
+              <th>TotalLimits_EOP_FY15</th>
+              <th>TotalLimits_EOP_FY15x</th>
+              <th>RWAFY15</th>
+              <th>RWAFY14</th>
+              <th>REVRWA_FY14</th>
+              <th>REVRWA_FY15</th>
+              <th>NPAT_AllocEq_FY14</th>
+              <th>NPAT_AllocEq_FY15X</th>
+              <th>Company_Avg_Activity_FY14</th>
+              <th>Company_Avg_Activity_FY15</th>
+              <th>ROE_FY14</th>
+              <th>ROE_FY15</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <th>CMGUnmaskedID</th>
+              <th>CMGUnmaskedName</th>
+              <th>ClientTier</th>
+              <th>GCPStream</th>
+              <th>GCPBusiness</th>
+              <th>CMGGlobalBU</th>
+              <th>CMGSegmentName</th>
+              <th>GlobalControlPoint</th>
+              <th>GCPGeography</th>
+              <th>GlobalRelationshipManagerName</th>
+              <th>REVENUE_FY14</th>
+              <th>REVENUE_FY15</th>
+              <th>Deposits_EOP_FY14</th>
+              <th>Deposits_EOP_FY15x</th>
+              <th>TotalLimits_EOP_FY14</th>
+              <th>TotalLimits_EOP_FY15</th>
+              <th>TotalLimits_EOP_FY15x</th>
+              <th>RWAFY15</th>
+              <th>RWAFY14</th>
+              <th>REVRWA_FY14</th>
+              <th>REVRWA_FY15</th>
+              <th>NPAT_AllocEq_FY14</th>
+              <th>NPAT_AllocEq_FY15X</th>
+              <th>Company_Avg_Activity_FY14</th>
+              <th>Company_Avg_Activity_FY15</th>
+              <th>ROE_FY14</th>
+              <th>ROE_FY15</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <section class="FAB" id="fabbtn" data-toggle="modal" data-target="#exampleModal" style="position: absolute;">
+    <div class="FAB__action-button" id="btnfloat">
+      <i class="action-button__icon material-icons">add</i>
+      <p class="action-button__text--hide">Add Customer</p>
+    </div>
+  </section>
+  <!-- Tambah Modal -->
+  <div class="modal fade bd-example-modal-lg" id="tambahModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1">CMGUnmaskedID</label>
+              <input type="email" class="form-control" id="CMGUnmaskedID" placeholder="Enter CMGUnmaskedID">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">CMGUnmaskedName</label>
+              <input type="email" class="form-control" id="CMGUnmaskedName" placeholder="Enter CMGUnmaskedName">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">ClientTier</label>
+              <input type="email" class="form-control" id="ClientTier" placeholder="Enter ClientTier">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">GCPStream</label>
+              <input type="email" class="form-control" id="GCPStream" placeholder="Enter GCPStream">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">GCPBusiness</label>
+              <input type="email" class="form-control" id="GCPBusiness" placeholder="Enter GCPBusiness">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">CMGGlobalBU</label>
+              <input type="email" class="form-control" id="CMGGlobalBU" placeholder="Enter CMGGlobalBU">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">CMGSegmentName</label>
+              <input type="email" class="form-control" id="CMGSegmentName" placeholder="Enter CMGSegmentName">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">GlobalControlPoint</label>
+              <input type="email" class="form-control" id="GlobalControlPoint" placeholder="Enter GlobalControlPoint">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">GCPGeography</label>
+              <input type="email" class="form-control" id="GCPGeography" placeholder="Enter GCPGeography">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">GlobalRelationshipManagerName</label>
+              <input type="email" class="form-control" id="GlobalRelationshipManagerName"
+                placeholder="Enter GlobalRelationshipManagerName">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">REVENUE_FY14</label>
+              <input type="email" class="form-control" id="REVENUE_FY14" placeholder="Enter REVENUE_FY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">REVENUE_FY15</label>
+              <input type="email" class="form-control" id="REVENUE_FY15" placeholder="Enter REVENUE_FY15">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Deposits_EOP_FY14</label>
+              <input type="email" class="form-control" id="Deposits_EOP_FY14" placeholder="Enter Deposits_EOP_FY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Deposits_EOP_FY15x</label>
+              <input type="email" class="form-control" id="Deposits_EOP_FY15x" placeholder="Enter Deposits_EOP_FY15x">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">TotalLimits_EOP_FY14</label>
+              <input type="email" class="form-control" id="TotalLimits_EOP_FY14"
+                placeholder="Enter TotalLimits_EOP_FY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">TotalLimits_EOP_FY15</label>
+              <input type="email" class="form-control" id="TotalLimits_EOP_FY15"
+                placeholder="Enter TotalLimits_EOP_FY15">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">TotalLimits_EOP_FY15x</label>
+              <input type="email" class="form-control" id="TotalLimits_EOP_FY15x"
+                placeholder="Enter TotalLimits_EOP_FY15x">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">RWAFY15</label>
+              <input type="email" class="form-control" id="RWAFY15" placeholder="Enter RWAFY15">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">RWAFY14</label>
+              <input type="email" class="form-control" id="RWAFY14" placeholder="Enter RWAFY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">REVRWA_FY14</label>
+              <input type="email" class="form-control" id="REVRWA_FY14" placeholder="Enter REVRWA_FY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">REVRWA_FY15</label>
+              <input type="email" class="form-control" id="REVRWA_FY15" placeholder="Enter REVRWA_FY15">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">NPAT_AllocEq_FY14</label>
+              <input type="email" class="form-control" id="NPAT_AllocEq_FY14" placeholder="Enter NPAT_AllocEq_FY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">NPAT_AllocEq_FY15X</label>
+              <input type="email" class="form-control" id="NPAT_AllocEq_FY15X" placeholder="Enter NPAT_AllocEq_FY15X">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Company_Avg_Activity_FY14</label>
+              <input type="email" class="form-control" id="Company_Avg_Activity_FY14"
+                placeholder="Enter Company_Avg_Activity_FY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Company_Avg_Activity_FY15</label>
+              <input type="email" class="form-control" id="Company_Avg_Activity_FY15"
+                placeholder="Enter Company_Avg_Activity_FY15">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">ROE_FY14</label>
+              <input type="email" class="form-control" id="ROE_FY14" placeholder="Enter ROE_FY14">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">ROE_FY15</label>
+              <input type="email" class="form-control" id="ROE_FY15" placeholder="Enter ROE_FY15">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btnSave">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js">
+  </script>
+  <script type="text/javascript">
+    var urlParams = new URLSearchParams(window.location.search);
+    var fd = new FormData();
+    fd.append('CMGUnmaskedID', urlParams.get('id'));
+    $.ajax({
+      url: "http://localhost:3000/detail",
+      method: "POST",
+      processData: false,
+      contentType: false,
+      data: fd,
+      success: function (res) {
+        if (res.data.CMGUnmaskedID == "") {
+          alert("data with this id is not defined");
+          window.location.href = "file:///D:/FAIS/CREATIVE/WEB/GO-LANG/testgin/index.html";
+        }
+        console.log(res);
+      }
+    })
+    // $.ajax({
+    //   url: "http://localhost:3000",
+    //   method: "GET",
+    //   success: function (res) {
+    //     console.log(res)
+    //   }
+    // })
+    $('#tableFetch tfoot th').each(function () {
+      var title = $(this).text();
+      $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    });
+
+    var table = $('#tableFetch').DataTable({
+      ajax: 'http://localhost:3000',
+      dataSrc: "data",
+      columns: [{
+          data: "CMGUnmaskedID"
+        },
+        {
+          data: "CMGUnmaskedName"
+        },
+        {
+          data: "ClientTier"
+        },
+        {
+          data: "GCPStream"
+        },
+        {
+          data: "GCPBusiness"
+        },
+        {
+          data: "CMGGlobalBU"
+        },
+        {
+          data: "CMGSegmentName"
+        },
+        {
+          data: "GlobalControlPoint"
+        },
+        {
+          data: "GCPGeography"
+        },
+        {
+          data: "GlobalRelationshipManagerName"
+        },
+        {
+          data: "REVENUE_FY14"
+        },
+        {
+          data: "REVENUE_FY15"
+        },
+        {
+          data: "Deposits_EOP_FY14"
+        },
+        {
+          data: "Deposits_EOP_FY15x"
+        },
+        {
+          data: "TotalLimits_EOP_FY14"
+        },
+        {
+          data: "TotalLimits_EOP_FY15"
+        },
+        {
+          data: "TotalLimits_EOP_FY15x"
+        },
+        {
+          data: "RWAFY15"
+        },
+        {
+          data: "RWAFY14"
+        },
+        {
+          data: "REVRWA_FY14"
+        },
+        {
+          data: "REVRWA_FY15"
+        },
+        {
+          data: "NPAT_AllocEq_FY14"
+        },
+        {
+          data: "NPAT_AllocEq_FY15X"
+        },
+        {
+          data: "Company_Avg_Activity_FY14"
+        },
+        {
+          data: "Company_Avg_Activity_FY15"
+        },
+        {
+          data: "ROE_FY14"
+        },
+        {
+          data: "ROE_FY15"
+        },
+      ],
+      scrollX: true,
+    });
+    table.columns().every(function () {
+      var that = this;
+
+      $('input', this.footer()).on('keyup change clear', function () {
+        if (that.search() !== this.value) {
+          that
+            .search(this.value)
+            .draw();
+        }
+      });
+    });
+
+    $('#tableFetch tbody').on('click', 'td.sorting_1', function () {
+      var data = table.row($(this).parents('tr')).data();
+      window.location.href = "file:///D:/FAIS/CREATIVE/WEB/GO-LANG/testgin/detail.html"
+    });
+
+    $('#tableFetch tbody').on('mouseover', 'td.sorting_1', function () {
+      var data = $(this).css('color', 'red');
+      var data = $(this).css('cursor', 'pointer');
+      var data = $(this).css('text-decoration', 'underline');
+    });
+
+    $('#tableFetch tbody').on('mouseleave', 'td.sorting_1', function () {
+      var data = $(this).css('color', 'black');
+      var data = $(this).css('text-decoration', 'none');
+    });
+
+    $("#fabbtn").click(function (e) {
+      e.preventDefault();
+      $("#tambahModal").modal();
+    });
+
+
+    $("#tambahModal #btnSave").click(function (e) {
+      e.preventDefault();
+      var fd = new FormData();
+      fd.append("CMGUnmaskedID", $("#tambahModal #CMGUnmaskedID").val());
+      fd.append("CMGUnmaskedName", $("#tambahModal #CMGUnmaskedName").val());
+      fd.append("ClientTier", $("#tambahModal #ClientTier").val());
+      fd.append("GCPStream", $("#tambahModal #GCPStream").val());
+      fd.append("GCPBusiness", $("#tambahModal #GCPBusiness").val());
+      fd.append("CMGGlobalBU", $("#tambahModal #CMGGlobalBU").val());
+      fd.append("CMGSegmentName", $("#tambahModal #CMGSegmentName").val());
+      fd.append("GlobalControlPoint", $("#tambahModal #GlobalControlPoint").val());
+      fd.append("GCPGeography", $("#tambahModal #GCPGeography").val());
+      fd.append("GlobalRelationshipManagerName", $("#tambahModal #GlobalRelationshipManagerName").val());
+      fd.append("REVENUE_FY14", $("#tambahModal #REVENUE_FY14").val());
+      fd.append("REVENUE_FY15", $("#tambahModal #REVENUE_FY15").val());
+      fd.append("Deposits_EOP_FY14", $("#tambahModal #Deposits_EOP_FY14").val());
+      fd.append("Deposits_EOP_FY15x", $("#tambahModal #Deposits_EOP_FY15x").val());
+      fd.append("TotalLimits_EOP_FY14", $("#tambahModal #TotalLimits_EOP_FY14").val());
+      fd.append("TotalLimits_EOP_FY15", $("#tambahModal #TotalLimits_EOP_FY15").val());
+      fd.append("TotalLimits_EOP_FY15x", $("#tambahModal #TotalLimits_EOP_FY15x").val());
+      fd.append("RWAFY15", $("#tambahModal #RWAFY15").val());
+      fd.append("RWAFY14", $("#tambahModal #RWAFY14").val());
+      fd.append("REVRWA_FY14", $("#tambahModal #REVRWA_FY14").val());
+      fd.append("REVRWA_FY15", $("#tambahModal #REVRWA_FY15").val());
+      fd.append("NPAT_AllocEq_FY14", $("#tambahModal #NPAT_AllocEq_FY14").val());
+      fd.append("NPAT_AllocEq_FY15X", $("#tambahModal #NPAT_AllocEq_FY15X").val());
+      fd.append("Company_Avg_Activity_FY14", $("#tambahModal #Company_Avg_Activity_FY14").val());
+      fd.append("Company_Avg_Activity_FY15", $("#tambahModal #Company_Avg_Activity_FY15").val());
+      fd.append("ROE_FY14", $("#tambahModal #ROE_FY14").val());
+      fd.append("ROE_FY15", $("#tambahModal #ROE_FY15").val());
+
+      $.ajax({
+        url: "http://localhost:3000",
+        method: "POST",
+        processData: false,
+        contentType: false,
+        data: fd,
+        success: function (res) {
+          window.location.reload();
+          alert('berhasil tambah data');
+        }
+      });
+    })
+    // $(window).load(function() {
+    // });
+  </script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script>
+    var roe = Highcharts.chart('roe', {
+      chart: {
+        type: 'pie'
+      },
+      title: {
+        text: 'Fruit Consumption'
+      },
+      xAxis: {
+        categories: ['Apples', 'Bananas', 'Oranges']
+      },
+      yAxis: {
+        title: {
+          text: 'Fruit eaten'
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [1, 0, 4]
+      }, {
+        name: 'John',
+        data: [5, 7, 3]
+      }]
+    });
+    var revenue = Highcharts.chart('revenue', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Fruit Consumption'
+      },
+      xAxis: {
+        categories: ['Apples', 'Bananas', 'Oranges']
+      },
+      yAxis: {
+        title: {
+          text: 'Fruit eaten'
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [1, 0, 4]
+      }, {
+        name: 'John',
+        data: [5, 7, 3]
+      }]
+    });
+    var totalLimit = Highcharts.chart('totalLimit', {
+      title: {
+        text: 'Fruit Consumption'
+      },
+      xAxis: {
+        categories: ['Apples', 'Bananas', 'Oranges']
+      },
+      yAxis: {
+        title: {
+          text: 'Fruit eaten'
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [1, 0, 4]
+      }, {
+        name: 'John',
+        data: [5, 7, 3]
+      }]
+    });
+    var companyAverage = Highcharts.chart('companyAverage', {
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: 'Fruit Consumption'
+      },
+      xAxis: {
+        categories: ['Apples', 'Bananas', 'Oranges']
+      },
+      yAxis: {
+        title: {
+          text: 'Fruit eaten'
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [1, 0, 4]
+      }, {
+        name: 'John',
+        data: [5, 7, 3]
+      }]
+    });
+  </script>
+</body>
+
+</html>
