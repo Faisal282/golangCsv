@@ -42,6 +42,8 @@ type Companies struct {
 	ROE_FY15                      string
 }
 
+const filePath = "./companiesest.csv"
+
 func main() {
 	router := gin.Default()
 
@@ -56,7 +58,7 @@ func main() {
 }
 
 func getHome(c *gin.Context) {
-	csvFile, err := os.Open("./companiesest.csv")
+	csvFile, err := os.Open(filePath)
 
 	if err != nil {
 		fmt.Println(err)
@@ -75,11 +77,11 @@ func getHome(c *gin.Context) {
 	var comp Companies
 	var companies []Companies
 
-	for index, each := range csvData {
+	for _, each := range csvData {
 		comp.CMGUnmaskedID = each[0]
-		if index == 0 {
-			comp.CMGUnmaskedID = "ini 1"
-		}
+		// if index == 0 {
+		// 	comp.CMGUnmaskedID = "ini 1"
+		// }
 		// fmt.Println(each[0])
 		comp.CMGUnmaskedName = each[1]
 		comp.ClientTier = each[2]
@@ -134,8 +136,7 @@ func getHome(c *gin.Context) {
 }
 
 func postHome(c *gin.Context) {
-	var path = "companies.csv"
-	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -239,7 +240,7 @@ func postHome(c *gin.Context) {
 	})
 }
 func getDetail(c *gin.Context) {
-	csvFile, err := os.Open("./companiesest.csv")
+	csvFile, err := os.Open(filePath)
 
 	if err != nil {
 		fmt.Println(err)
@@ -318,7 +319,7 @@ func getDetail(c *gin.Context) {
 func postUpdate(c *gin.Context) {
 
 	//open file
-	f, err := os.Open("companiesest.csv")
+	f, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -395,7 +396,7 @@ func postUpdate(c *gin.Context) {
 	}
 
 	// create file again
-	f, err = os.Create("companiesest.csv")
+	f, err = os.Create(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
