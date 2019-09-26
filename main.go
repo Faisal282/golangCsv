@@ -42,7 +42,7 @@ type Companies struct {
 	ROE_FY15                      string
 }
 
-const filePath = "./companiesest.csv"
+const filePath = "./companies.csv"
 
 func main() {
 	router := gin.Default()
@@ -51,7 +51,8 @@ func main() {
 
 	router.GET("/", getHome)
 	router.POST("/", postHome)
-	router.POST("/detail", getDetail)
+
+	router.GET("/detail/:id", getDetail)
 	router.POST("/update", postUpdate)
 
 	router.Run()
@@ -77,7 +78,7 @@ func getHome(c *gin.Context) {
 	var comp Companies
 	var companies []Companies
 
-	for _, each := range csvData {
+	for _, each := range csvData[1:] {
 		comp.CMGUnmaskedID = each[0]
 		// if index == 0 {
 		// 	comp.CMGUnmaskedID = "ini 1"
@@ -256,12 +257,12 @@ func getDetail(c *gin.Context) {
 		os.Exit(1)
 	}
 
-	var comp Companies
+	// var comp Companies
 	var companies []Companies
 	var detail Companies
 
 	for _, each := range csvData {
-		if each[0] == c.PostForm("CMGUnmaskedID") {
+		if each[0] == c.Param("id") {
 			detail.CMGUnmaskedID = each[0]
 			detail.CMGUnmaskedName = each[1]
 			detail.ClientTier = each[2]
@@ -289,8 +290,8 @@ func getDetail(c *gin.Context) {
 			detail.Company_Avg_Activity_FY15 = each[24]
 			detail.ROE_FY14 = each[25]
 			detail.ROE_FY15 = each[26]
+			companies = append(companies, detail)
 		}
-		companies = append(companies, comp)
 	}
 
 	// Convert to JSON
@@ -312,7 +313,7 @@ func getDetail(c *gin.Context) {
 	// jsonFile.Close()
 
 	c.JSON(200, gin.H{
-		"data": detail,
+		"data": companies,
 	})
 }
 

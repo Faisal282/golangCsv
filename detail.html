@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
+  <link rel="stylesheet" href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
     @import url(https://fonts.googleapis.com/css?family=Roboto:200,300,400);
@@ -141,6 +144,42 @@
     <select name="" id="" class="mt-2">
       <option value="" selected>SELECT COMPANY NAME (CMGUnmaskedName)</option>
     </select>
+    <button class="btn btn-outline-success">SEARCH</button>
+    <hr>
+    <div class="row">
+      <div class="col-3">
+        <h5>Client Tier:</h5>
+        <p id="clientTier"></p>
+      </div>
+      <div class="col-3">
+        <h5>Commercial Stream:</h5>
+        <p id="gcpStream"></p>
+      </div>
+      <div class="col-3">
+        <h5>Commercial Business:</h5>
+        <p id="gcpBusiness"></p>
+      </div>
+      <div class="col-3">
+        <h5>Business Category:</h5>
+        <p id="cmgGlobalBu"></p>
+      </div>
+      <div class="col-3">
+        <h5>Business Segment:</h5>
+        <p id="cmgSegmentName"></p>
+      </div>
+      <div class="col-3">
+        <h5>Country:</h5>
+        <p id="globalControlPoint"></p>
+      </div>
+      <div class="col-3">
+        <h5>World Region:</h5>
+        <p id="worldRegion"></p>
+      </div>
+      <div class="col-3">
+        <h5>Manager In Contact:</h5>
+        <p id="globalRelationshipManagerName"></p>
+      </div>
+    </div>
     <div class="row">
       <div class="col-3">
         <div id="roe"></div>
@@ -155,7 +194,7 @@
         <div id="companyAverage"></div>
       </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-5 p-2">
       <div class="col-12">
         <table id="tableFetch" class="display" style="width:100%;">
           <thead>
@@ -190,175 +229,84 @@
             </tr>
           </thead>
           <tbody></tbody>
-          <tfoot>
-            <tr>
-              <th>CMGUnmaskedID</th>
-              <th>CMGUnmaskedName</th>
-              <th>ClientTier</th>
-              <th>GCPStream</th>
-              <th>GCPBusiness</th>
-              <th>CMGGlobalBU</th>
-              <th>CMGSegmentName</th>
-              <th>GlobalControlPoint</th>
-              <th>GCPGeography</th>
-              <th>GlobalRelationshipManagerName</th>
-              <th>REVENUE_FY14</th>
-              <th>REVENUE_FY15</th>
-              <th>Deposits_EOP_FY14</th>
-              <th>Deposits_EOP_FY15x</th>
-              <th>TotalLimits_EOP_FY14</th>
-              <th>TotalLimits_EOP_FY15</th>
-              <th>TotalLimits_EOP_FY15x</th>
-              <th>RWAFY15</th>
-              <th>RWAFY14</th>
-              <th>REVRWA_FY14</th>
-              <th>REVRWA_FY15</th>
-              <th>NPAT_AllocEq_FY14</th>
-              <th>NPAT_AllocEq_FY15X</th>
-              <th>Company_Avg_Activity_FY14</th>
-              <th>Company_Avg_Activity_FY15</th>
-              <th>ROE_FY14</th>
-              <th>ROE_FY15</th>
-            </tr>
-          </tfoot>
         </table>
       </div>
     </div>
   </div>
-  <section class="FAB" id="fabbtn" data-toggle="modal" data-target="#exampleModal" style="position: absolute;">
-    <div class="FAB__action-button" id="btnfloat">
-      <i class="action-button__icon material-icons">add</i>
-      <p class="action-button__text--hide">Add Customer</p>
-    </div>
-  </section>
   <!-- Tambah Modal -->
-  <div class="modal fade bd-example-modal-lg" id="tambahModal" tabindex="-1" role="dialog"
+  <div class="modal fade bd-example-modal-xl" id="editModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">EDIT <span id="title"></span></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="exampleInputEmail1">CMGUnmaskedID</label>
-              <input type="email" class="form-control" id="CMGUnmaskedID" placeholder="Enter CMGUnmaskedID">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">CMGUnmaskedName</label>
-              <input type="email" class="form-control" id="CMGUnmaskedName" placeholder="Enter CMGUnmaskedName">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">ClientTier</label>
-              <input type="email" class="form-control" id="ClientTier" placeholder="Enter ClientTier">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">GCPStream</label>
-              <input type="email" class="form-control" id="GCPStream" placeholder="Enter GCPStream">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">GCPBusiness</label>
-              <input type="email" class="form-control" id="GCPBusiness" placeholder="Enter GCPBusiness">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">CMGGlobalBU</label>
-              <input type="email" class="form-control" id="CMGGlobalBU" placeholder="Enter CMGGlobalBU">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">CMGSegmentName</label>
-              <input type="email" class="form-control" id="CMGSegmentName" placeholder="Enter CMGSegmentName">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">GlobalControlPoint</label>
-              <input type="email" class="form-control" id="GlobalControlPoint" placeholder="Enter GlobalControlPoint">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">GCPGeography</label>
-              <input type="email" class="form-control" id="GCPGeography" placeholder="Enter GCPGeography">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">GlobalRelationshipManagerName</label>
-              <input type="email" class="form-control" id="GlobalRelationshipManagerName"
-                placeholder="Enter GlobalRelationshipManagerName">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">REVENUE_FY14</label>
-              <input type="email" class="form-control" id="REVENUE_FY14" placeholder="Enter REVENUE_FY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">REVENUE_FY15</label>
-              <input type="email" class="form-control" id="REVENUE_FY15" placeholder="Enter REVENUE_FY15">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Deposits_EOP_FY14</label>
-              <input type="email" class="form-control" id="Deposits_EOP_FY14" placeholder="Enter Deposits_EOP_FY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Deposits_EOP_FY15x</label>
-              <input type="email" class="form-control" id="Deposits_EOP_FY15x" placeholder="Enter Deposits_EOP_FY15x">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">TotalLimits_EOP_FY14</label>
-              <input type="email" class="form-control" id="TotalLimits_EOP_FY14"
-                placeholder="Enter TotalLimits_EOP_FY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">TotalLimits_EOP_FY15</label>
-              <input type="email" class="form-control" id="TotalLimits_EOP_FY15"
-                placeholder="Enter TotalLimits_EOP_FY15">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">TotalLimits_EOP_FY15x</label>
-              <input type="email" class="form-control" id="TotalLimits_EOP_FY15x"
-                placeholder="Enter TotalLimits_EOP_FY15x">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">RWAFY15</label>
-              <input type="email" class="form-control" id="RWAFY15" placeholder="Enter RWAFY15">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">RWAFY14</label>
-              <input type="email" class="form-control" id="RWAFY14" placeholder="Enter RWAFY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">REVRWA_FY14</label>
-              <input type="email" class="form-control" id="REVRWA_FY14" placeholder="Enter REVRWA_FY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">REVRWA_FY15</label>
-              <input type="email" class="form-control" id="REVRWA_FY15" placeholder="Enter REVRWA_FY15">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">NPAT_AllocEq_FY14</label>
-              <input type="email" class="form-control" id="NPAT_AllocEq_FY14" placeholder="Enter NPAT_AllocEq_FY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">NPAT_AllocEq_FY15X</label>
-              <input type="email" class="form-control" id="NPAT_AllocEq_FY15X" placeholder="Enter NPAT_AllocEq_FY15X">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Company_Avg_Activity_FY14</label>
-              <input type="email" class="form-control" id="Company_Avg_Activity_FY14"
-                placeholder="Enter Company_Avg_Activity_FY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Company_Avg_Activity_FY15</label>
-              <input type="email" class="form-control" id="Company_Avg_Activity_FY15"
-                placeholder="Enter Company_Avg_Activity_FY15">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">ROE_FY14</label>
-              <input type="email" class="form-control" id="ROE_FY14" placeholder="Enter ROE_FY14">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">ROE_FY15</label>
-              <input type="email" class="form-control" id="ROE_FY15" placeholder="Enter ROE_FY15">
-            </div>
-          </form>
+          <table id="example" class="display" style="width:100%">
+            <thead>
+              <tr>
+                <th>CMGUnmaskedName</th>
+                <th>ClientTier</th>
+                <th>GCPStream</th>
+                <th>GCPBusiness</th>
+                <th>CMGGlobalBU</th>
+                <th>CMGSegmentName</th>
+                <th>GlobalControlPoint</th>
+                <th>GCPGeography</th>
+                <th>GlobalRelationshipManagerName</th>
+                <th>REVENUE_FY14</th>
+                <th>REVENUE_FY15</th>
+                <th>Deposits_EOP_FY14</th>
+                <th>Deposits_EOP_FY15x</th>
+                <th>TotalLimits_EOP_FY14</th>
+                <th>TotalLimits_EOP_FY15</th>
+                <th>TotalLimits_EOP_FY15x</th>
+                <th>RWAFY15</th>
+                <th>RWAFY14</th>
+                <th>REVRWA_FY14</th>
+                <th>REVRWA_FY15</th>
+                <th>NPAT_AllocEq_FY14</th>
+                <th>NPAT_AllocEq_FY15X</th>
+                <th>Company_Avg_Activity_FY14</th>
+                <th>Company_Avg_Activity_FY15</th>
+                <th>ROE_FY14</th>
+                <th>ROE_FY15</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th><input type="text" id="CMGUnmaskedName">CMGUnmaskedName</th>
+                <th><input type="text" id="ClientTier">ClientTier</th>
+                <th><input type="text" id="GCPStream">GCPStream</th>
+                <th><input type="text" id="GCPBusiness">GCPBusiness</th>
+                <th><input type="text" id="CMGGlobalBU">CMGGlobalBU</th>
+                <th><input type="text" id="CMGSegmentName">CMGSegmentName</th>
+                <th><input type="text" id="GlobalControlPoint">GlobalControlPoint</th>
+                <th><input type="text" id="GCPGeography">GCPGeography</th>
+                <th><input type="text" id="GlobalRelationshipManagerName">GlobalRelationshipManagerName</th>
+                <th><input type="text" id="REVENUE_FY14">REVENUE_FY14</th>
+                <th><input type="text" id="REVENUE_FY15">REVENUE_FY15</th>
+                <th><input type="text" id="Deposits_EOP_FY14">Deposits_EOP_FY14</th>
+                <th><input type="text" id="Deposits_EOP_FY15x">Deposits_EOP_FY15x</th>
+                <th><input type="text" id="TotalLimits_EOP_FY14">TotalLimits_EOP_FY14</th>
+                <th><input type="text" id="TotalLimits_EOP_FY15">TotalLimits_EOP_FY15</th>
+                <th><input type="text" id="TotalLimits_EOP_FY15x">TotalLimits_EOP_FY15x</th>
+                <th><input type="text" id="RWAFY15">RWAFY15</th>
+                <th><input type="text" id="RWAFY14">RWAFY14</th>
+                <th><input type="text" id="REVRWA_FY14">REVRWA_FY14</th>
+                <th><input type="text" id="REVRWA_FY15">REVRWA_FY15</th>
+                <th><input type="text" id="NPAT_AllocEq_FY14">NPAT_AllocEq_FY14</th>
+                <th><input type="text" id="NPAT_AllocEq_FY15X">NPAT_AllocEq_FY15X</th>
+                <th><input type="text" id="Company_Avg_Activity_FY14">Company_Avg_Activity_FY14</th>
+                <th><input type="text" id="Company_Avg_Activity_FY15">Company_Avg_Activity_FY15</th>
+                <th><input type="text" id="ROE_FY14">ROE_FY14</th>
+                <th><input type="text" id="ROE_FY15">ROE_FY15</th>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -379,41 +327,50 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js">
+  <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/js/jquery.dataTables.min.js"></script>
   </script>
   <script type="text/javascript">
     var urlParams = new URLSearchParams(window.location.search);
-    var fd = new FormData();
-    fd.append('CMGUnmaskedID', urlParams.get('id'));
+    // var fd = new FormData();
+    // fd.append('CMGUnmaskedID', urlParams.get('id'));
+    $(document).ready(function () {
+      var edit = $('#example').DataTable({
+        scrollX: true,
+        order: false,
+        "searching": false,
+      });
+    })
     $.ajax({
-      url: "http://localhost:3000/detail",
-      method: "POST",
-      processData: false,
-      contentType: false,
-      data: fd,
+      url: "http://localhost:3000/detail/" + urlParams.get('id'),
+      method: "GET",
       success: function (res) {
-        if (res.data.CMGUnmaskedID == "") {
-          alert("data with this id is not defined");
-          window.location.href = "file:///D:/FAIS/CREATIVE/WEB/GO-LANG/testgin/index.html";
+        if (res.data == null) {
+          alert('data tidak ada');
+          window.location.href = "./index.html";
         }
-        console.log(res);
+        console.log(res.data);
+        $("#clientTier").html(`<span class="text-danger">${res.data[0].ClientTier}</span>`);
+        $("#gcpStream").html(`<span class="text-danger">${res.data[0].GCPStream}</span>`);
+        $("#gcpBusiness").html(`<span class="text-danger">${res.data[0].GCPBusiness}</span>`);
+        $("#cmgGlobalBu").html(`<span class="text-danger">${res.data[0].CMGGlobalBU}</span>`);
+        $("#cmgSegmentName").html(`<span class="text-danger">${res.data[0].CMGSegmentName}</span>`);
+        $("#globalControlPoint").html(`<span class="text-danger">${res.data[0].GlobalControlPoint}</span>`);
+        $("#worldRegion").html(`<span class="text-danger">${res.data[0].GlobalControlPoint}</span>`);
+        $("#globalRelationshipManagerName").html(`<span class="text-danger">${res.data[0].GlobalRelationshipManagerName}</span>`);
       }
     })
-    // $.ajax({
-    //   url: "http://localhost:3000",
-    //   method: "GET",
-    //   success: function (res) {
-    //     console.log(res)
-    //   }
-    // })
     $('#tableFetch tfoot th').each(function () {
       var title = $(this).text();
       $(this).html('<input type="text" placeholder="Search ' + title + '" />');
     });
 
     var table = $('#tableFetch').DataTable({
-      ajax: 'http://localhost:3000',
+      scrollX: true,
+      searching: false,
+      ajax: "http://localhost:3000/detail/" + urlParams.get('id'),
       dataSrc: "data",
+      // order: [[ 1, 'asc' ]],
       columns: [{
           data: "CMGUnmaskedID"
         },
@@ -496,6 +453,10 @@
           data: "ROE_FY15"
         },
       ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
       scrollX: true,
     });
     table.columns().every(function () {
@@ -512,66 +473,89 @@
 
     $('#tableFetch tbody').on('click', 'td.sorting_1', function () {
       var data = table.row($(this).parents('tr')).data();
-      window.location.href = "file:///D:/FAIS/CREATIVE/WEB/GO-LANG/testgin/detail.html"
+      console.log(data);
+      $("#editModal").modal();
+      $("#editModal #title").html(
+        `${data.CMGUnmaskedName} - <span class="text-danger">${data.CMGSegmentName}</span>`);
+      $("#editModal #CMGUnmaskedName").val(data.CMGUnmaskedName);
+      $("#editModal #ClientTier").val(data.ClientTier);
+      $("#editModal #GCPStream").val(data.GCPStream);
+      $("#editModal #GCPBusiness").val(data.GCPBusiness);
+      $("#editModal #CMGGlobalBU").val(data.CMGGlobalBU);
+      $("#editModal #CMGSegmentName").val(data.CMGSegmentName);
+      $("#editModal #GlobalControlPoint").val(data.GlobalControlPoint);
+      $("#editModal #GCPGeography").val(data.GCPGeography);
+      $("#editModal #GlobalRelationshipManagerName").val(data.GlobalRelationshipManagerName);
+      $("#editModal #REVENUE_FY14").val(data.REVENUE_FY14);
+      $("#editModal #REVENUE_FY15").val(data.REVENUE_FY15);
+      $("#editModal #Deposits_EOP_FY14").val(data.Deposits_EOP_FY14);
+      $("#editModal #Deposits_EOP_FY15x").val(data.Deposits_EOP_FY15x);
+      $("#editModal #TotalLimits_EOP_FY14").val(data.TotalLimits_EOP_FY14);
+      $("#editModal #TotalLimits_EOP_FY15").val(data.TotalLimits_EOP_FY15);
+      $("#editModal #TotalLimits_EOP_FY15x").val(data.TotalLimits_EOP_FY15x);
+      $("#editModal #RWAFY15").val(data.RWAFY15);
+      $("#editModal #RWAFY14").val(data.RWAFY14);
+      $("#editModal #REVRWA_FY14").val(data.REVRWA_FY14);
+      $("#editModal #REVRWA_FY15").val(data.REVRWA_FY15);
+      $("#editModal #NPAT_AllocEq_FY14").val(data.NPAT_AllocEq_FY14);
+      $("#editModal #NPAT_AllocEq_FY15X").val(data.NPAT_AllocEq_FY15X);
+      $("#editModal #Company_Avg_Activity_FY14").val(data.Company_Avg_Activity_FY14);
+      $("#editModal #Company_Avg_Activity_FY15").val(data.Company_Avg_Activity_FY15);
+      $("#editModal #ROE_FY14").val(data.ROE_FY14);
+      $("#editModal #ROE_FY15").val(data.ROE_FY15);
     });
 
     $('#tableFetch tbody').on('mouseover', 'td.sorting_1', function () {
-      var data = $(this).css('color', 'red');
-      var data = $(this).css('cursor', 'pointer');
-      var data = $(this).css('text-decoration', 'underline');
+      $(this).css('color', 'red');
+      $(this).css('cursor', 'pointer');
+      $(this).css('text-decoration', 'underline');
     });
 
     $('#tableFetch tbody').on('mouseleave', 'td.sorting_1', function () {
-      var data = $(this).css('color', 'black');
-      var data = $(this).css('text-decoration', 'none');
+      $(this).css('color', 'black');
+      $(this).css('text-decoration', 'none');
     });
 
-    $("#fabbtn").click(function (e) {
-      e.preventDefault();
-      $("#tambahModal").modal();
-    });
-
-
-    $("#tambahModal #btnSave").click(function (e) {
+    $("#editModal #btnSave").click(function (e) {
       e.preventDefault();
       var fd = new FormData();
-      fd.append("CMGUnmaskedID", $("#tambahModal #CMGUnmaskedID").val());
-      fd.append("CMGUnmaskedName", $("#tambahModal #CMGUnmaskedName").val());
-      fd.append("ClientTier", $("#tambahModal #ClientTier").val());
-      fd.append("GCPStream", $("#tambahModal #GCPStream").val());
-      fd.append("GCPBusiness", $("#tambahModal #GCPBusiness").val());
-      fd.append("CMGGlobalBU", $("#tambahModal #CMGGlobalBU").val());
-      fd.append("CMGSegmentName", $("#tambahModal #CMGSegmentName").val());
-      fd.append("GlobalControlPoint", $("#tambahModal #GlobalControlPoint").val());
-      fd.append("GCPGeography", $("#tambahModal #GCPGeography").val());
-      fd.append("GlobalRelationshipManagerName", $("#tambahModal #GlobalRelationshipManagerName").val());
-      fd.append("REVENUE_FY14", $("#tambahModal #REVENUE_FY14").val());
-      fd.append("REVENUE_FY15", $("#tambahModal #REVENUE_FY15").val());
-      fd.append("Deposits_EOP_FY14", $("#tambahModal #Deposits_EOP_FY14").val());
-      fd.append("Deposits_EOP_FY15x", $("#tambahModal #Deposits_EOP_FY15x").val());
-      fd.append("TotalLimits_EOP_FY14", $("#tambahModal #TotalLimits_EOP_FY14").val());
-      fd.append("TotalLimits_EOP_FY15", $("#tambahModal #TotalLimits_EOP_FY15").val());
-      fd.append("TotalLimits_EOP_FY15x", $("#tambahModal #TotalLimits_EOP_FY15x").val());
-      fd.append("RWAFY15", $("#tambahModal #RWAFY15").val());
-      fd.append("RWAFY14", $("#tambahModal #RWAFY14").val());
-      fd.append("REVRWA_FY14", $("#tambahModal #REVRWA_FY14").val());
-      fd.append("REVRWA_FY15", $("#tambahModal #REVRWA_FY15").val());
-      fd.append("NPAT_AllocEq_FY14", $("#tambahModal #NPAT_AllocEq_FY14").val());
-      fd.append("NPAT_AllocEq_FY15X", $("#tambahModal #NPAT_AllocEq_FY15X").val());
-      fd.append("Company_Avg_Activity_FY14", $("#tambahModal #Company_Avg_Activity_FY14").val());
-      fd.append("Company_Avg_Activity_FY15", $("#tambahModal #Company_Avg_Activity_FY15").val());
-      fd.append("ROE_FY14", $("#tambahModal #ROE_FY14").val());
-      fd.append("ROE_FY15", $("#tambahModal #ROE_FY15").val());
+      fd.append("CMGUnmaskedID", urlParams.get('id'));
+      fd.append("CMGUnmaskedName", $("#editModal #CMGUnmaskedName").val());
+      fd.append("ClientTier", $("#editModal #ClientTier").val());
+      fd.append("GCPStream", $("#editModal #GCPStream").val());
+      fd.append("GCPBusiness", $("#editModal #GCPBusiness").val());
+      fd.append("CMGGlobalBU", $("#editModal #CMGGlobalBU").val());
+      fd.append("CMGSegmentName", $("#editModal #CMGSegmentName").val());
+      fd.append("GlobalControlPoint", $("#editModal #GlobalControlPoint").val());
+      fd.append("GCPGeography", $("#editModal #GCPGeography").val());
+      fd.append("GlobalRelationshipManagerName", $("#editModal #GlobalRelationshipManagerName").val());
+      fd.append("REVENUE_FY14", $("#editModal #REVENUE_FY14").val());
+      fd.append("REVENUE_FY15", $("#editModal #REVENUE_FY15").val());
+      fd.append("Deposits_EOP_FY14", $("#editModal #Deposits_EOP_FY14").val());
+      fd.append("Deposits_EOP_FY15x", $("#editModal #Deposits_EOP_FY15x").val());
+      fd.append("TotalLimits_EOP_FY14", $("#editModal #TotalLimits_EOP_FY14").val());
+      fd.append("TotalLimits_EOP_FY15", $("#editModal #TotalLimits_EOP_FY15").val());
+      fd.append("TotalLimits_EOP_FY15x", $("#editModal #TotalLimits_EOP_FY15x").val());
+      fd.append("RWAFY15", $("#editModal #RWAFY15").val());
+      fd.append("RWAFY14", $("#editModal #RWAFY14").val());
+      fd.append("REVRWA_FY14", $("#editModal #REVRWA_FY14").val());
+      fd.append("REVRWA_FY15", $("#editModal #REVRWA_FY15").val());
+      fd.append("NPAT_AllocEq_FY14", $("#editModal #NPAT_AllocEq_FY14").val());
+      fd.append("NPAT_AllocEq_FY15X", $("#editModal #NPAT_AllocEq_FY15X").val());
+      fd.append("Company_Avg_Activity_FY14", $("#editModal #Company_Avg_Activity_FY14").val());
+      fd.append("Company_Avg_Activity_FY15", $("#editModal #Company_Avg_Activity_FY15").val());
+      fd.append("ROE_FY14", $("#editModal #ROE_FY14").val());
+      fd.append("ROE_FY15", $("#editModal #ROE_FY15").val());
 
       $.ajax({
-        url: "http://localhost:3000",
+        url: "http://localhost:3000/update",
         method: "POST",
         processData: false,
         contentType: false,
         data: fd,
         success: function (res) {
           window.location.reload();
-          alert('berhasil tambah data');
+          alert('berhasil update id ' + urlParams.get('id'));
         }
       });
     })
@@ -579,96 +563,144 @@
     // });
   </script>
   <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script>
-    var roe = Highcharts.chart('roe', {
-      chart: {
-        type: 'pie'
-      },
-      title: {
-        text: 'Fruit Consumption'
-      },
-      xAxis: {
-        categories: ['Apples', 'Bananas', 'Oranges']
-      },
-      yAxis: {
-        title: {
-          text: 'Fruit eaten'
+    function parseNumberCustom(number_string) {
+      var new_number = parseInt(number_string.indexOf(',') >= 3 ? number_string.split(',')[0] : number_string.replace(
+        /[^0-9\.]/g, ''));
+      console.log('Before==>' + number_string + ', After==>' + new_number);
+    }
+    $.ajax({
+      url: "http://localhost:3000/detail/" + urlParams.get('id'),
+      method: "GET",
+      async: true,
+      success: function (res) {
+        if (res.data.CMGUnmaskedID == "") {
+          alert("data with this id is not defined");
+          window.location.href = "./index.html";
         }
-      },
-      series: [{
-        name: 'Jane',
-        data: [1, 0, 4]
-      }, {
-        name: 'John',
-        data: [5, 7, 3]
-      }]
-    });
-    var revenue = Highcharts.chart('revenue', {
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: 'Fruit Consumption'
-      },
-      xAxis: {
-        categories: ['Apples', 'Bananas', 'Oranges']
-      },
-      yAxis: {
-        title: {
-          text: 'Fruit eaten'
-        }
-      },
-      series: [{
-        name: 'Jane',
-        data: [1, 0, 4]
-      }, {
-        name: 'John',
-        data: [5, 7, 3]
-      }]
-    });
-    var totalLimit = Highcharts.chart('totalLimit', {
-      title: {
-        text: 'Fruit Consumption'
-      },
-      xAxis: {
-        categories: ['Apples', 'Bananas', 'Oranges']
-      },
-      yAxis: {
-        title: {
-          text: 'Fruit eaten'
-        }
-      },
-      series: [{
-        name: 'Jane',
-        data: [1, 0, 4]
-      }, {
-        name: 'John',
-        data: [5, 7, 3]
-      }]
-    });
-    var companyAverage = Highcharts.chart('companyAverage', {
-      chart: {
-        type: 'bar'
-      },
-      title: {
-        text: 'Fruit Consumption'
-      },
-      xAxis: {
-        categories: ['Apples', 'Bananas', 'Oranges']
-      },
-      yAxis: {
-        title: {
-          text: 'Fruit eaten'
-        }
-      },
-      series: [{
-        name: 'Jane',
-        data: [1, 0, 4]
-      }, {
-        name: 'John',
-        data: [5, 7, 3]
-      }]
-    });
+        // console.log(res.data);
+        res.data.map(function (data) {
+          // roedata.push(`${data.ROE_FY14}`);
+          // roedata.push(data.ROE_FY15);
+          var roe = Highcharts.chart('roe', {
+            chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie'
+            },
+            title: {
+              text: 'ROE FY_14 VS FY15'
+            },
+            xAxis: {
+              categories: ['ROE FY 14', 'ROE FY 15']
+            },
+            yAxis: {
+              title: {
+                text: 'Fruit eaten'
+              }
+            },
+            series: [{
+              name: "Count",
+              colorByPoint: true,
+              data: [{
+                name: 'ROE FY 14',
+                y: Math.abs(parseFloat(data.ROE_FY14) / 100.0),
+                // sliced: true,
+                selected: true
+              }, {
+                name: 'ROE FY 15',
+                y: 100.41,
+                // sliced: true,
+                // selected: true
+              }, ]
+            }],
+            exporting: {
+              enabled: true
+            }
+          });
+          var RWAFY14 = parseInt((data.RWAFY14).replace(",", "."));
+          var RWAFY15 = parseInt((data.RWAFY15).replace(",", "."));
+          var REVENUE_FY14 = parseInt((data.REVENUE_FY14).replace(",", "."));
+          var REVENUE_FY15 = parseInt((data.REVENUE_FY15).replace(",", "."));
+          var revenue = Highcharts.chart('revenue', {
+            chart: {
+              type: 'column'
+            },
+            title: {
+              text: 'Revenue & RWA FY14 vs RWAFY15'
+            },
+            xAxis: {
+              categories: ['RWA FY14', 'REVENUE FY14', 'RWA FY15', 'REVENUE FY15']
+            },
+            yAxis: {
+              title: {
+                text: 'Comparation'
+              }
+            },
+            series: [{
+              name: 'Data',
+              data: [RWAFY14, RWAFY15, REVENUE_FY14, REVENUE_FY15]
+            }]
+          });
+          var TotalLimits_EOP_FY14 = parseInt((data.TotalLimits_EOP_FY14).replace(",", "."));
+          var TotalLimits_EOP_FY15 = parseInt((data.TotalLimits_EOP_FY15).replace(",", "."));
+          var totalLimit = Highcharts.chart('totalLimit', {
+            title: {
+              text: 'Total Limit EOP FY14 vs FY15'
+            },
+            xAxis: {
+              categories: ['TotalLimits_EOP_FY14', 'TotalLimits_EOP_FY15']
+            },
+            yAxis: {
+              title: {
+                text: 'Comparation'
+              }
+            },
+            series: [{
+              name: 'Data',
+              data: [TotalLimits_EOP_FY14, TotalLimits_EOP_FY15]
+            }]
+          });
+          var Company_Avg_Activity_FY14 = parseInt((data.Company_Avg_Activity_FY14).replace(",", "."));
+          var Company_Avg_Activity_FY15 = parseInt((data.Company_Avg_Activity_FY15).replace(",", "."));
+          var NPAT_AllocEq_FY14 = parseInt((data.NPAT_AllocEq_FY14).replace(",", "."));
+          var NPAT_AllocEq_FY15X = parseInt((data.NPAT_AllocEq_FY15X).replace(",", "."));
+          var TotalLimits_EOP_FY14 = parseInt((data.TotalLimits_EOP_FY14).replace(",", "."));
+          var TotalLimits_EOP_FY15 = parseInt((data.TotalLimits_EOP_FY15).replace(",", "."));
+          var Deposits_EOP_FY14 = parseInt((data.Deposits_EOP_FY14).replace(",", "."));
+          var Deposits_EOP_FY15x = parseInt((data.Deposits_EOP_FY15x).replace(",", "."));
+          var companyAverage = Highcharts.chart('companyAverage', {
+            chart: {
+              type: 'bar'
+            },
+            title: {
+              text: 'Company Average Activity FY14 vs FY15'
+            },
+            xAxis: {
+              categories: ['Company_Avg_Activity', 'NPAT_AllocEq', 'TotalLimits_EOP', 'Deposits_EOP']
+            },
+            yAxis: {
+              title: {
+                text: 'Comparation Data'
+              }
+            },
+            series: [{
+              name: 'FY14',
+              data: [Company_Avg_Activity_FY14, NPAT_AllocEq_FY14, TotalLimits_EOP_FY14,
+                Deposits_EOP_FY14
+              ]
+            }, {
+              name: 'FY15',
+              data: [Company_Avg_Activity_FY15, NPAT_AllocEq_FY15X, TotalLimits_EOP_FY15,
+                Deposits_EOP_FY15x
+              ]
+            }]
+          });
+        })
+      }
+    })
   </script>
 </body>
 

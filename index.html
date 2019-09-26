@@ -229,27 +229,6 @@
               <th>GCPStream</th>
               <th>GCPBusiness</th>
               <th>CMGGlobalBU</th>
-              <th>CMGSegmentName</th>
-              <th>GlobalControlPoint</th>
-              <th>GCPGeography</th>
-              <th>GlobalRelationshipManagerName</th>
-              <th>REVENUE_FY14</th>
-              <th>REVENUE_FY15</th>
-              <th>Deposits_EOP_FY14</th>
-              <th>Deposits_EOP_FY15x</th>
-              <th>TotalLimits_EOP_FY14</th>
-              <th>TotalLimits_EOP_FY15</th>
-              <th>TotalLimits_EOP_FY15x</th>
-              <th>RWAFY15</th>
-              <th>RWAFY14</th>
-              <th>REVRWA_FY14</th>
-              <th>REVRWA_FY15</th>
-              <th>NPAT_AllocEq_FY14</th>
-              <th>NPAT_AllocEq_FY15X</th>
-              <th>Company_Avg_Activity_FY14</th>
-              <th>Company_Avg_Activity_FY15</th>
-              <th>ROE_FY14</th>
-              <th>ROE_FY15</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -261,27 +240,6 @@
               <th>GCPStream</th>
               <th>GCPBusiness</th>
               <th>CMGGlobalBU</th>
-              <th>CMGSegmentName</th>
-              <th>GlobalControlPoint</th>
-              <th>GCPGeography</th>
-              <th>GlobalRelationshipManagerName</th>
-              <th>REVENUE_FY14</th>
-              <th>REVENUE_FY15</th>
-              <th>Deposits_EOP_FY14</th>
-              <th>Deposits_EOP_FY15x</th>
-              <th>TotalLimits_EOP_FY14</th>
-              <th>TotalLimits_EOP_FY15</th>
-              <th>TotalLimits_EOP_FY15x</th>
-              <th>RWAFY15</th>
-              <th>RWAFY14</th>
-              <th>REVRWA_FY14</th>
-              <th>REVRWA_FY15</th>
-              <th>NPAT_AllocEq_FY14</th>
-              <th>NPAT_AllocEq_FY15X</th>
-              <th>Company_Avg_Activity_FY14</th>
-              <th>Company_Avg_Activity_FY15</th>
-              <th>ROE_FY14</th>
-              <th>ROE_FY15</th>
             </tr>
           </tfoot>
         </table>
@@ -478,69 +436,6 @@
         {
           data: "CMGGlobalBU"
         },
-        {
-          data: "CMGSegmentName"
-        },
-        {
-          data: "GlobalControlPoint"
-        },
-        {
-          data: "GCPGeography"
-        },
-        {
-          data: "GlobalRelationshipManagerName"
-        },
-        {
-          data: "REVENUE_FY14"
-        },
-        {
-          data: "REVENUE_FY15"
-        },
-        {
-          data: "Deposits_EOP_FY14"
-        },
-        {
-          data: "Deposits_EOP_FY15x"
-        },
-        {
-          data: "TotalLimits_EOP_FY14"
-        },
-        {
-          data: "TotalLimits_EOP_FY15"
-        },
-        {
-          data: "TotalLimits_EOP_FY15x"
-        },
-        {
-          data: "RWAFY15"
-        },
-        {
-          data: "RWAFY14"
-        },
-        {
-          data: "REVRWA_FY14"
-        },
-        {
-          data: "REVRWA_FY15"
-        },
-        {
-          data: "NPAT_AllocEq_FY14"
-        },
-        {
-          data: "NPAT_AllocEq_FY15X"
-        },
-        {
-          data: "Company_Avg_Activity_FY14"
-        },
-        {
-          data: "Company_Avg_Activity_FY15"
-        },
-        {
-          data: "ROE_FY14"
-        },
-        {
-          data: "ROE_FY15"
-        },
       ],
       scrollX: true,
     });
@@ -556,20 +451,21 @@
       });
     });
 
-    $('#tableFetch tbody').on('click', 'td.sorting_1', function () {
+    $('#tableFetch tbody').on('click', 'td.sorting_1', function (e) {
+      e.preventDefault();
 			var data = table.row($(this).parents('tr')).data();
-      window.location.href = `file:///D:/FAIS/CREATIVE/WEB/GO-LANG/testgin/detail.html?id=${data.CMGUnmaskedID}`
+      window.location.href = `./detail.html?id=${data.CMGUnmaskedID}`;
     });
     
     $('#tableFetch tbody').on('mouseover', 'td.sorting_1', function () {
-      var data = $(this).css('color', 'red');
-      var data = $(this).css('cursor', 'pointer');
-      var data = $(this).css('text-decoration', 'underline');
+      $(this).css('color', 'red');
+      $(this).css('cursor', 'pointer');
+      $(this).css('text-decoration', 'underline');
     });
 
     $('#tableFetch tbody').on('mouseleave', 'td.sorting_1', function () {
-      var data = $(this).css('color', 'black');
-      var data = $(this).css('text-decoration', 'none');
+      $(this).css('color', 'black');
+      $(this).css('text-decoration', 'none');
     });
 
     $("#fabbtn").click(function (e) {
@@ -621,29 +517,6 @@
       });
     })
     // $(window).load(function() {
-    // });
-  </script>
-  <script>
-    // var x = $('.FAB__mini-action-button').find('.mini-action-button--hide').length * 60 + 60;
-
-    // $('.FAB').hover(function () {
-    //   $('.FAB').height(x);
-    // }, function () {
-    //   $('.mini-action-button--show').attr('class', 'mini-action-button--hide');
-    //   $('.FAB').height(0);
-    // });
-
-    // $('.mini-action-button').hover(function () {
-    //   $(this).find('.mini-action-button__text--hide').attr('class', 'mini-action-button__text--show');
-    // }, function () {
-    //   $(this).find('.mini-action-button__text--show').attr('class', 'mini-action-button__text--hide');
-    // });
-
-    // $('.FAB__action-button').hover(function () {
-    //   $(this).find('.action-button__text--hide').attr('class', 'action-button__text--show');
-    //   $('.mini-action-button--hide').attr('class', 'mini-action-button--show');
-    // }, function () {
-    //   $(this).find('.action-button__text--show').attr('class', 'action-button__text--hide');
     // });
   </script>
 </body>
